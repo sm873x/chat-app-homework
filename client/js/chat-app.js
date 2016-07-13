@@ -7,7 +7,7 @@
     // var $chatBox = $('.messages')
 
     //TODO - messageHandler function here
-    window.chat.listenForMessages(function messageHandler(data) {
+    ns.listenForMessages(function messageHandler(data) {
         console.log(data);
         $('.messages')
             .append('<article>' + data.message + '</article>');
@@ -24,7 +24,8 @@
 
     function formDisplay(data) {
         $('.login').hide();
-        $('.chat').show();
+        $('.send-message')
+            .css('display', 'block');
         token = data.token;
         console.log(data.token);
     }
