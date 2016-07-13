@@ -8,37 +8,36 @@
     });
 
 
-    //TODO - post Ajax request to /login to send username
+    //LOGIN
     $('.login').on( 'submit', function login(e) {
         e.preventDefault();
 
         var username = $('.username').val();
-        loginUsername(username);
+        ns.login(username)
+            .done(formDisplay);
     });
 
-    function loginUsername(username) {
-        $.ajax({
+    function formDisplay() {
+        $('.login').hide();
+        $('.chat').show();
+    }
+
+    ns.login = function loginUsername(username) {
+        return $.ajax({
             url: '/login',
             method: 'post',
             headers: {'Content-Type':'application/json'},
             data: JSON.stringify({ 'username': username }),
             dataType: 'json'
         })
-        .done(function loginSuccess(data) {
-            // getToken(data);
-            console.log(data);
-        })
         .fail(function loginFail(xhr) {
             var $msgTxt = $('.msgTxt').val();
-            handleLoginError(xhr, $msgTxt);
+            ns.error(xhr, $msgTxt);
         });
     }
 
-    // function getToken(data) {
-    //     data.
-    // }
 
-    function handleLoginError(xhr, elem) {
+    ns.error = function handleError(xhr, elem) {
         if (xhr.status === 404) {
             $(elem).text('Ruh roh, what did you do?');
         } else {
