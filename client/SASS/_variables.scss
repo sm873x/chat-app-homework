@@ -1,0 +1,24 @@
+$formsBorderRadius: 10px;
+$borderColors: #dbb0e8;
+$msgChatRightPadding: 10px;
+
+$loginBorder: 2px solid #6424ad;
+$loginPadding: 5px;
+$loginWidth: 200px;
+
+$chatBorder: 2px dotted $borderColors;
+$chatTopMargin: 20px;
+$chatMainWidth: 360px;
+
+$msgInputBorder: 1px solid $borderColors;
+$msgInputWidth: 97%;
+$msgInputTopSeparation: 10px;
+$msgInputPadding: 5px;
+$msgInputBoxWidth: 84%;
+
+$chatInitFontSize: 50px;
+$chatInitFontColor: #aa6adb;
+
+$userJoinPaddingRight: $msgChatRightPadding;
+
+$messagePaddingRight: $msgChatRightPadding;
