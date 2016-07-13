@@ -1,4 +1,33 @@
+.login {
+  border: 2px solid #6424ad;
+  padding: 5px;
+  width: 200px;
+  border-radius: 10px; }
+
+.messages :first-child {
+  font-weight: bold;
+  font-size: 50px;
+  color: #aa6adb;
+  text-align: center; }
+.messages :nth-child(2) {
+  font-weight: bold;
+  float: right; }
+.messages :nth-child(n+3) {
+  float: right;
+  clear: both; }
+
 .send-message {
   display: none; }
+
+.chat {
+  border: 2px dotted #dbb0e8;
+  margin-top: 20px;
+  width: 360px; }
+
+.send-message {
+  margin-top: 45px;
+  float: right;
+  border: 1px solid #dbb0e8;
+  padding: 5px; }
 
 /*# sourceMappingURL=styles.css.map */

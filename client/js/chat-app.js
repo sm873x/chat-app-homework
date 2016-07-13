@@ -3,14 +3,14 @@
     window.chat = ns = ( ns || {} );
 
     var token;
-    var message = $('.message').val();
-    // var $chatBox = $('.messages')
+    var $chatBox = $('.messages');
 
     //TODO - messageHandler function here
     ns.listenForMessages(function messageHandler(data) {
         console.log(data);
         $('.messages')
             .append('<article>' + data.message + '</article>');
+        console.log($('.messages'));
     });
 
     //LOGIN
@@ -41,7 +41,7 @@
         .fail(function loginFail(xhr) {
             ns.error(xhr, $chatBox);
         });
-    }
+    };
 
     ns.error = function handleError(xhr, elem) {
         if (xhr.status === 404) {
@@ -49,7 +49,7 @@
         } else {
             elem.text('Hmm...not sure what\'s happening here');
         }
-    }
+    };
 
     //TODO - submits chat form with post Ajax request
     $('.send-message').on( 'submit', function sendMsg(e) {
@@ -81,6 +81,6 @@
             var $msgTxt = $('.msgTxt').val();
             ns.error(xhr, $msgTxt);
         });
-    }
+    };
 
 })(window.chat);
