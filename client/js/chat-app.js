@@ -4,32 +4,51 @@
 
     var token;
     var $chatBox = $('.messages');
+    var $login = $('.login');
+    var $sendMsg = $('.send-message');
+    var $msg = $('.message');
 
-    //TODO - messageHandler function here
+    /**
+     * Takes messages and displays in html
+     * @param  {fn}  messageHandler() displays new messages
+     * @return {void}
+     */
     ns.listenForMessages(function messageHandler(data) {
         console.log(data);
-        $('.messages')
+        $chatBox
             .append('<article>' + data.message + '</article>');
-        console.log($('.messages'));
+        console.log($chatBox);
     });
 
-    //LOGIN
-    $('.login').on( 'submit', function login(e) {
+    $login.on( 'submit', function login(e) {
         e.preventDefault();
-
         var username = $('.username').val();
         ns.login(username)
-            .done(formDisplay);
+            .done(formDisplay)
+            .fail(function loginFail(xhr) {
+                ns.error(xhr, $chatBox);
+            });
     });
 
+    /**
+     * After submission of username, the login form is hidden and the message form is displayed.
+     * The authorization token is kept for later use.
+     * @param  {JSON} data XHR object that is returned
+     * @return {void}
+     */
     function formDisplay(data) {
-        $('.login').hide();
-        $('.send-message')
+        $login.hide();
+        $sendMsg
             .css('display', 'block');
         token = data.token;
         console.log(data.token);
     }
 
+    /**
+     * Login ajax request
+     * @param  {string} username Your chat id
+     * @return {JSON}   xhr      Data object
+     */
     ns.login = function loginUsername(username) {
         return $.ajax({
             url: '/login',
@@ -37,12 +56,15 @@
             headers: {'Content-Type':'application/json'},
             data: JSON.stringify({ 'username': username }),
             dataType: 'json'
-        })
-        .fail(function loginFail(xhr) {
-            ns.error(xhr, $chatBox);
         });
     };
 
+    /**
+     * Handles error responses
+     * @param  {JSON} xhr  Response data from ajax call
+     * @param  {html} elem Where to place error message
+     * @return {void}
+     */
     ns.error = function handleError(xhr, elem) {
         if (xhr.status === 404) {
             elem.text('Ruh roh, what did you do?');
@@ -51,21 +73,33 @@
         }
     };
 
-    //TODO - submits chat form with post Ajax request
-    $('.send-message').on( 'submit', function sendMsg(e) {
+    $sendMsg.on( 'submit', function sendMsg(e) {
         e.preventDefault();
 
-        var message = $('.message').val();
+        var message = $msg.val();
 
         ns.sendMessage(message)
-            .done(clearChat);
+            .done(clearChat)
+            .fail(function loginFail(xhr) {
+                var $msgTxt = $('.msgTxt').val();
+                ns.error(xhr, $msgTxt);
+            });
         console.log(message);
     });
 
+    /**
+     * Clear text from message input field
+     * @return {void}
+     */
     function clearChat() {
-        $('.message').val('');
+        $msg.val('');
     }
 
+    /**
+     * Send message to chat server
+     * @param  {string} message Message that was typed
+     * @return {JSON}   xhr     Response data
+     */
     ns.sendMessage = function sendMessage(message) {
         return $.ajax({
             url: '/chat',
@@ -76,10 +110,6 @@
             },
             data: JSON.stringify({ 'message': message }),
             dataType: 'json'
-        })
-        .fail(function loginFail(xhr) {
-            var $msgTxt = $('.msgTxt').val();
-            ns.error(xhr, $msgTxt);
         });
     };
 
